@@ -64,7 +64,8 @@ def get_facturas():
         query = facturas_ref.where("forma_pago", "==", forma)
     else:
         query = facturas_ref
-
+        
+    query = query.order_by("factura_numero", direction=Query.ASCENDING)
     docs = query.stream()
     facturas = [doc.to_dict() | {"id": doc.id} for doc in docs]
 
