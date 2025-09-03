@@ -10,3 +10,4 @@ firebase_admin
 google-cloud-firestore
 gunicorn
 flask-cors
+flasgger
