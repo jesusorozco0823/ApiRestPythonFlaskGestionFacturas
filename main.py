@@ -1,7 +1,7 @@
 import os, json
 import firebase_admin
 from firebase_admin import credentials, firestore
-from flask import Flask
+from flask import Flask, request, jsonify
 
 # Cargar credenciales desde variable de entorno (GOOGLE_CREDENTIALS)
 cred_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
