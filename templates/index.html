@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Gestión de Facturas</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-bottom: 20px; }
+    select, button, a { margin-left: 8px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f5f5f5; }
+    tr:nth-child(even) { background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Gestión de Facturas (Flask + Firestore)</h1>
+
+  <form method="get" action="/">
+    <label for="dia">Día:</label>
+    <select id="dia" name="dia">
+      {% for d in dias %}
+        <option value="{{ d }}" {% if d == dia_sel %}selected{% endif %}>{{ d }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="forma">Forma de pago:</label>
+    <select id="forma" name="forma">
+      {% for f in formas %}
+        <option value="{{ f }}" {% if f == forma_sel %}selected{% endif %}>{{ f }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Consultar</button>
+    <a href="/">Limpiar</a>
+  </form>
+
+  <h2>Resultados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Cliente</th>
+        <th>Día</th>
+        <th>Forma de pago</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in facturas %}
+        <tr>
+          <td>{{ f.factura_numero }}</td>
+          <td>{{ f.cliente }}</td>
+          <td>{{ f.dia_semana }}</td>
+          <td>{{ f.forma_pago }}</td>
+          <td>{{ f.valor }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6">Sin resultados</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

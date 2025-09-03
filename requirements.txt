@@ -4,3 +4,8 @@ autopep8
 
 # App
 flask
+Flask
+firebase-admin
+firebase_admin
+google-cloud-firestore
+gunicorn
