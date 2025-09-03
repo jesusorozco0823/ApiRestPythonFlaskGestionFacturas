@@ -4,6 +4,7 @@ from firebase_admin import credentials, firestore
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
+from google.cloud.firestore_v1 import Query
 
 # Cargar credenciales desde variable de entorno (GOOGLE_CREDENTIALS)
 cred_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
