@@ -52,25 +52,30 @@ def get_facturas():
             }
           ]
     """
-    dia = request.args.get("dia")
-    forma = request.args.get("forma")
+    try:
+      dia = request.args.get("dia")
+      forma = request.args.get("forma")
 
-    facturas_ref = db.collection(FACTURAS_COL)
+      facturas_ref = db.collection(FACTURAS_COL)
 
-    if dia and forma:
-        query = facturas_ref.where("dia_semana", "==", dia).where("forma_pago", "==", forma)
-    elif dia:
-        query = facturas_ref.where("dia_semana", "==", dia)
-    elif forma:
-        query = facturas_ref.where("forma_pago", "==", forma)
-    else:
-        query = facturas_ref
-        
-    query = query.order_by("factura_numero", direction=Query.ASCENDING)
-    docs = query.stream()
-    facturas = [doc.to_dict() | {"id": doc.id} for doc in docs]
+      if dia and forma:
+          query = facturas_ref.where("dia_semana", "==", dia).where("forma_pago", "==", forma)
+      elif dia:
+          query = facturas_ref.where("dia_semana", "==", dia)
+      elif forma:
+          query = facturas_ref.where("forma_pago", "==", forma)
+      else:
+          query = facturas_ref
+          
+      query = query.order_by("factura_numero", direction=Query.ASCENDING)
+      docs = query.stream()
+      facturas = [doc.to_dict() | {"id": doc.id} for doc in docs]
 
-    return jsonify(facturas), 200
+      return jsonify(facturas), 200
+    except Exception as e:
+      import traceback
+      traceback.print_exc()
+      return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/facturas", methods=["POST"])
@@ -111,9 +116,14 @@ def add_factura():
             "id": "abc123"
           }
     """
-    data = request.json
-    ref = db.collection(FACTURAS_COL).add(data)
-    return jsonify({"status": "ok", "id": ref[1].id}), 201
+    try:
+      data = request.json
+      ref = db.collection(FACTURAS_COL).add(data)
+      return jsonify({"status": "ok", "id": ref[1].id}), 201
+    except Exception as e:
+      import traceback
+      traceback.print_exc()
+      return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/facturas/<id>", methods=["DELETE"])
@@ -136,8 +146,13 @@ def delete_factura(id):
             "id": "abc123"
           }
     """
-    db.collection(FACTURAS_COL).document(id).delete()
-    return jsonify({"status": "ok", "id": id}), 200
+    try:
+      db.collection(FACTURAS_COL).document(id).delete()
+      return jsonify({"status": "ok", "id": id}), 200
+    except Exception as e:
+      import traceback
+      traceback.print_exc()
+      return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
